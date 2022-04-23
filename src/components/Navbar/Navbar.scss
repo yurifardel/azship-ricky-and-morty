@@ -1,0 +1,13 @@
+#btn[aria-expanded="false"] > .close {
+  display: none;
+}
+
+#btn[aria-expanded="true"] > .open {
+  display: none;
+}
+
+.active {
+  color: #000 !important;
+  font-weight: bold;
+  border-bottom: 3px solid #32a852;
+}
