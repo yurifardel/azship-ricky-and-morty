@@ -5,30 +5,25 @@ import "./Home.scss";
 
 const Home: React.FC = () => {
   const { data } = useContext(Context);
-  let [results, setResults] = useState<any>([]);
-  let [search, setSearch] = useState<string>("");
-
-  const getCharacters = () => {
-    if (!data) {
-      return;
-    }
-
-    const info = data.characters.results.map((itens: any) => {
-      const { name, status, species, gender, image } = itens;
-
-      return {
-        name,
-        status,
-        species,
-        gender,
-        image,
-      };
-    });
-    setResults(info);
-  };
+  const [results, setResults] = useState<any>([]);
+  const [search, setSearch] = useState<string>(""); // Falta implementar!
+  console.log(search) 
 
   useEffect(() => {
-    getCharacters();
+    (function(){
+      const info = data.characters.results.map((itens: any) => {
+        const { name, status, species, gender, image } = itens;
+  
+        return {
+          name,
+          status,
+          species,
+          gender,
+          image,
+        };
+      });
+      setResults(info);
+    })()
   }, [data]);
 
   return (

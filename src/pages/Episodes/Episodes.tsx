@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import React, { useContext, useEffect, useState } from "react";
 import { Card } from "../../components";
 import { Context } from "../../context/Context";
@@ -9,50 +8,43 @@ import "./Episodes.scss";
 const Episodes: React.FC = () => {
   const { data } = useContext(Context);
 
-  let [episodes, setEpisodes] = useState<any>([]);
-  let { name, air_date, episode } = episodes;
-  let [id, setID] = useState(1);
-  let [results, setResults] = useState<any>([]);
+  const [episodes, setEpisodes] = useState<any>([]);
+  const { name, air_date, episode } = episodes;
 
-  const getData = async () => {
-    if (!data) {
-      return;
-    }
-
-    let gpl = data.episodes.results[id];
-
-    setEpisodes(gpl);
-
-    let res = await episodes.characters.map((details: {}) => {
-      return details;
-    });
-
-    setResults(res);
-  };
+  const [id, setID] = useState<number>(1);
+  const [results, setResults] = useState<{}>([]);
 
   useEffect(() => {
-    getData();
+    (async function () {
+      const gpl = data.episodes.results[id];
+      setEpisodes(gpl);
+
+      if (!episode) {
+        return;
+      }
+
+      const res = await episodes.characters.map((details: {}): object => {
+        return details;
+      });
+
+      setResults(res);
+    })();
   }, [id]);
 
   return (
     <div className="container">
       <div className="row mb-3">
         <h1 className="text-center mb-3">
-          Episode:{" "}
+          {" "}
           <span id="title" className=" text-primary">
-            {name === "" ? "Unknown" : name}
+            {id === 1 ? null : name}
           </span>
         </h1>
-        <h5 className="text-center">
-          Air Date: {air_date === "" ? "Unknown" : air_date}
-        </h5>
-        <h5 className="text-center">
-          Number ep: {episode === "" ? "Unknown" : episode}
-        </h5>
+        <h5 className="text-center">{id === 1 ? null : air_date}</h5>
+        <h5 className="text-center">{id === 1 ? null : episode}</h5>
       </div>
       <div className="row">
         <div className="col-lg-3 col-12 mb-4">
-          <h4 className="text-center mb-4">Pick Ep</h4>
           <Group name="Episode" callback={setID} total={20} />
         </div>
         <div className="col-lg-8 col-12">

@@ -1,33 +1,34 @@
-import { createContext, ReactNode } from "react";
-import { useQuery } from '@apollo/client'
-import { GET_ALL_CHARACTERS } from '../graphql/index'
+import { createContext, ReactNode, useEffect, useState } from "react";
+import { useQuery } from "@apollo/client";
+import { GET_ALL_CHARACTERS } from "../graphql/index";
 
 interface ContextProvider {
-  children: ReactNode
+  children: ReactNode;
 }
 
 interface ContextData {
   data: {
     characters: {
-      info: {}
-      results: [{}]
-    }
+      info: {};
+      results: [{}];
+    };
     episodes: {
-      results: [{}]
-    }
-  }
-  loading: boolean
+      results: [{}];
+    };
+  };
+  loading: boolean;
 }
 
-export const Context = createContext({} as ContextData)
+export const Context = createContext({} as ContextData);
 
-export default function AppProvider ({children}: ContextProvider) {
-  const {data, loading} = useQuery(GET_ALL_CHARACTERS)
+export default function AppProvider({ children }: ContextProvider) {
+  const { data, loading } = useQuery(GET_ALL_CHARACTERS);
+
+  if (!data) {
+    return null;
+  }
 
   return (
-    <Context.Provider value={{ loading, data}}>
-      {children}
-    </Context.Provider>
-  )
+    <Context.Provider value={{ loading, data }}>{children}</Context.Provider>
+  );
 }
-
